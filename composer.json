@@ -1,7 +1,18 @@
 {
+    "name": "mudrock/mudrock",
+    "authors": [
+        {
+            "name": "Douglas Sales",
+            "email": "douglassales18@hotmail.com"
+        }
+    ],
     "autoload": {
         "psr-4": {
-            "Mudrock\\Helpers\\" : "system/helpers"
+            "app\\": "app/",
+            "system\\core\\": "system/core/"
         }
+    },
+    "require": {
+        "twig/twig": "^3.3"
     }
 }
