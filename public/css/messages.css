@@ -1,0 +1,66 @@
+*{
+  text-align: center;
+  margin: 0;
+}
+
+.description {
+  color: red; 
+  font-size: 20px; 
+  font-family: arial;
+}
+
+#notfound {
+  position: relative;
+  height: 100vh;
+}
+
+.notfound {
+  width: 100%;
+  line-height: 1.4;
+}
+
+.notfound .notfound-404 {
+  height: 220px;
+}
+
+.notfound .notfound-404 h1 {
+  font-family: 'Poppins', sans-serif;
+  font-size: 200px;
+  font-weight: 700;
+  margin: 0px;
+  padding: 0px;
+  color: #e2e2e2;
+  letter-spacing: 7px;
+}
+
+.notfound h2 {
+  font-family: 'Poppins', sans-serif;
+  font-size: 28px;
+  font-weight: 400;
+  color: #222;
+}
+
+@media only screen and (max-width: 767px) {
+  .notfound .notfound-404 {
+    height: 200px;
+  }
+
+  .notfound .notfound-404 h1 {
+    font-size: 170px;
+  }
+
+  .notfound h2 {
+    font-size: 24px;
+  }
+}
+
+@media only screen and (max-width: 480px) {
+
+  .notfound .notfound-404 h1 {
+    font-size: 120px;
+  }
+
+  .notfound h2 {
+    font-size: 18px;
+  }
+}
