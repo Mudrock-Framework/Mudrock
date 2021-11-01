@@ -11,7 +11,8 @@ class BaseRouter {
     private $array_get = [];
     private $array_post = [];
 
-    public function __construct() {        
+    public function run() {
+        session_start();
         $this->init();
         require_once('.././app/config/routes.php');
         $this->exec();
@@ -27,7 +28,10 @@ class BaseRouter {
             unset($normalize_uri[$i]);
         }
 
-        $this->uri = implode('/', array_values($normalize_uri));
+        $uri_imploded = implode('/', array_values($normalize_uri));
+        $normalize_uri_params = explode('?', $uri_imploded);
+
+        $this->uri = $normalize_uri_params[0];
 
         if (@$_GET['debug_uri'] == 'true') {
             $uri = str_replace('?debug_uri=true', '', $this->uri);
@@ -151,6 +155,11 @@ class BaseRouter {
             }
         }
         return $router_exists;
+    }
+
+    public function getUri()
+    {
+        return $this->uri;
     }
 
 }
