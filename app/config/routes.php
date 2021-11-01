@@ -2,6 +2,6 @@
 
 $this->get('/', 'Welcome@index');
 
-$this->post('/', function(){
-    echo 'Requisição do tipo POST';
-});
+$this->get('/langPt', 'Welcome@langPt');
+
+$this->get('/langDefault', 'Welcome@langDefault');

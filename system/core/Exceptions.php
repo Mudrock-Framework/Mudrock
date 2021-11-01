@@ -4,6 +4,9 @@ use system\core\Controller;
 
 class Exceptions extends Controller {
 
+    public function __construct() {
+    }
+
     public function error(String $error, String $description = NULL) {
         switch ($error) {
 
