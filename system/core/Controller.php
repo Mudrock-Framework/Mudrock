@@ -38,15 +38,6 @@ class Controller {
         }
     }
 
-    protected function setLanguage(String $folder_language = NULL) {
-        if ($folder_language) {
-            $idiom = $folder_language;
-        } else {
-            $idiom = DEFAULT_LANGUAGE;
-        }
-        (new Session)->set('language', $idiom);
-    }
-
     protected function setSession(string $column, string $value) {
         (new Session)->set($column, $value);
     }

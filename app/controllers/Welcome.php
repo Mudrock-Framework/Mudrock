@@ -17,10 +17,10 @@ class Welcome extends Controller {
     }
 
     public function langPt() {
-        $this->setLanguage('pt_br');
+        setLanguage('pt_br');
     }
 
     public function langDefault() {
-        $this->setLanguage();
+        setLanguage();
     }
 }
