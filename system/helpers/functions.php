@@ -1,5 +1,7 @@
 <?php
 
+use system\core\Session;
+
 function dd($parameters = NULL, bool $die = TRUE) {
     echo '<pre>';
     print_r($parameters);
@@ -35,6 +37,15 @@ function validateFormatDate(String $date, String $format = 'Y-m-d'): String
         return $th;
     }
     
+}
+
+function setLanguage(String $folder_language = NULL) {
+    if ($folder_language) {
+        $idiom = $folder_language;
+    } else {
+        $idiom = DEFAULT_LANGUAGE;
+    }
+    (new Session)->set('language', $idiom);
 }
 
 function getVersion() {
