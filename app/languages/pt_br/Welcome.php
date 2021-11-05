@@ -1,5 +1,5 @@
 <?php
 
 return [
-    'nova_palavra' => 'Palavra em português'
+    'example' => 'Frase em Português'
 ];
