@@ -33,6 +33,10 @@ class Exceptions extends Controller {
             case 'request_method_not_allowed':
                 $this->callControllerMessage(404, 'Request method type not allowed', 'This type of request method is not allowed:', $description);
                 break;
+
+            case 'view_not_found':
+                $this->callControllerMessage(404, 'View file not found', 'The view file was not found in the "app/views/" folder:', $description);
+                break;
             
             default:
                 break;

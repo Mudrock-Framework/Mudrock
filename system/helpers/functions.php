@@ -2,6 +2,8 @@
 
 use system\core\Session;
 
+define('VERSION', '1.0');
+
 function dd($parameters = NULL, bool $die = TRUE) {
     echo '<pre>';
     print_r($parameters);
@@ -14,7 +16,7 @@ function dd($parameters = NULL, bool $die = TRUE) {
 
 function now(String $datetime = NULL, String $format = NULL): String 
 {
-    $date = ($datetime) ? $datetime : date('Y-m-d H:i:s');
+    $date = ($datetime) ? $datetime : date(DEFAULT_FORMAT_DATE);
     
     if ($format) {
         $validate_format = validateFormatDate($date, $format);
@@ -36,7 +38,6 @@ function validateFormatDate(String $date, String $format = 'Y-m-d'): String
     } catch (\Throwable $th) {
         return $th;
     }
-    
 }
 
 function setLanguage(String $folder_language = NULL) {
@@ -48,6 +49,15 @@ function setLanguage(String $folder_language = NULL) {
     (new Session)->set('language', $idiom);
 }
 
+function callFile(String $file) {
+    $file_view = '.././app/views/' . $file . '.php';
+    if (file_exists($file_view)) {
+        include ($file_view);
+    } else {
+        echo 'Error';
+    }
+}
+
 function getVersion() {
-    return '1.0';
+    echo VERSION;
 }

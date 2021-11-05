@@ -10,8 +10,7 @@ class Welcome extends Controller {
     }
 
     public function index() {
-        $this->setSession('teste', 'Testando uma sessão');
-        $this->data['version'] = getVersion();
+        $this->var('teste', 'teste');
         $this->title('My First Page');
         $this->view('welcome');
     }
