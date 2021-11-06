@@ -4,20 +4,36 @@ namespace system\core;
 
 class Welcome_model extends Model {
 
-    public function getUsers(String $table) {
-        $this->table($table);
-        $this->where('email', '=', 'douglas@teste.com');
-//        $this->and_where('nome', '=', 'Fernanda');
-//        $this->order_by('id', 'asc');
-//        $this->limit(1);
-//        return $this->result();
+    public function getUsers() {
+        $this->table('users');
         return $this->result();
     }
 
-    public function getUser(String $table, Int $id) {
-        $this->table($table);
+    public function getUserById(Int $id) {
+        $this->table('user');
         $this->where('id', '=', $id);
         return $this->row();
+    }
+
+    public function insertUser() {
+        $data = [
+            'name' => 'User Name',
+            'email' => 'User Mail',
+            'password' => 'User Pass'
+        ];
+        $this->table('users');
+        return $this->insert($data);
+    }
+
+    public function updateUser(Int $id) {
+        $data = [
+            'name' => 'New User Name',
+            'email' => 'New User Mail',
+            'password' => 'New User Pass'
+        ];
+        $this->table('users');
+        $this->where('id', '=', $id);
+        return $this->update($data);
     }
 
 }
