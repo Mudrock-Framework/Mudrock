@@ -24,10 +24,6 @@ class BaseRouter {
         $explode_uri   = explode('/', $_SERVER['REQUEST_URI']);
         $normalize_uri = array_values(array_filter($explode_uri));
 
-        for ($i=0; $i < URI_COUNT; $i++) { 
-            unset($normalize_uri[$i]);
-        }
-
         $uri_imploded = implode('/', array_values($normalize_uri));
         $normalize_uri_params = explode('?', $uri_imploded);
 
