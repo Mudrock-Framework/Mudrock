@@ -1,8 +1,14 @@
+<?php
 
-<!-- To include other files, just use the following code: -->
-<?php echo callFile('header'); ?>
+// To include other files, just use the following code:
+echo callFile('header');
 
-<?php $this->lang('example') ?> <br><br>
+// Using the translation function
+$this->lang('example');
+
+echo '<div class="separator"></div>';
+
+?>
 
 <div class="main text-center">
     Welcome to <b>Mudrock Framework <?php getVersion() ?></b>
