@@ -4,7 +4,9 @@ namespace system\core;
 class Controller {
 
     protected $data = [];
-    public $language = [];
+    protected $language = [];
+    public $model;
+    protected $model_name;
 
     protected function view(String $view) {
         $file_view = '.././app/views/' . $view . '.php';
@@ -31,13 +33,23 @@ class Controller {
         include('.././system/core/src/message_'.$type.'.php');
     }
 
-    protected function language(String $file) {
+    protected function load_language(String $file) {
         $folder = ($this->getSession('language')) ? $this->getSession('language') : DEFAULT_LANGUAGE;
         $filename = '.././app/languages/'. $folder .'/'. $file .'.php';
         if(file_exists($filename)) {
             $this->language = include $filename;
         } else {
             $this->language = [];
+        }
+    }
+
+    protected function load_model(String $file) {
+        $filename = '.././app/models/'. $file .'.php';
+        if(file_exists($filename)) {
+            $this->model_name = $file;
+            include $filename;
+            $final_file = "\system\core\\".$this->model_name;
+            $this->model = new $final_file;
         }
     }
 

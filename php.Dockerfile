@@ -1,6 +1,7 @@
 FROM php:7.4-apache
 # INSTALL PHP EXTENSIONS
 RUN docker-php-ext-install pdo_mysql
+RUN docker-php-ext-install mysqli
 # ANABLE APACHE MOD REWRITE
 RUN a2enmod rewrite
 # ANABLE APACHE MOD HEADER

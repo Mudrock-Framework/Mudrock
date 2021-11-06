@@ -5,11 +5,12 @@ use system\core\Controller;
 class Welcome extends Controller {
 
     public function __construct() {
-        $this->language('Welcome');
+        $this->load_language('Welcome');
+        $this->load_model('Welcome_model');
     }
 
     public function index() {
-        $this->var('teste', 'teste');
+        $this->var('users', $this->model->getUsers('users'));
         $this->title('My First Page');
         $this->view('welcome');
     }
