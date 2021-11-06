@@ -8,22 +8,6 @@ $this->lang('example');
 
 echo '<div class="separator"></div>';
 
-echo '<pre>';
-print_r($users);
-echo '</pre>';
-
-echo '<div class="separator"></div>';
-
-echo '<pre>';
-print_r($this->model->getUser('users', 1));
-echo '</pre>';
-
-echo '<div class="separator"></div>';
-
-echo '<pre>';
-print_r($this->model->getUser('users', 2));
-echo '</pre>';
-
 ?>
 
 <div class="main text-center">

@@ -79,6 +79,55 @@ class Model {
         }
     }
 
+    protected function insert(Array $data) {
+        if ($this->table != '') {
+            return 'Table not defined';
+        }
+        $final_columns = "";
+        $final_values = "";
+        foreach ($data as $column => $value) {
+            $final_columns .= "$column,";
+            $final_values .= "'$value',";
+        }
+        if ($final_values != '' && $final_columns != '') {
+            $final_columns = substr($final_columns, 0, -1);
+            $final_values = substr($final_values, 0, -1);
+            $connect = $this->connect();
+            $sql_insert = "INSERT INTO {$this->table} ($final_columns) VALUES ($final_values);";
+            $connect->query($sql_insert);
+            $id = $connect->insert_id;
+            $connect->close();
+            return $id;
+        } else {
+            return 'Values not informed';
+        }
+    }
+
+    protected function update(Array $data) {
+        if ($this->table == '') {
+            return 'Table not defined';
+        }
+        if ($this->where != '') {
+            $where = "WHERE {$this->where}";
+        } else {
+            $where = '';
+        }
+        $final_values = "";
+        foreach ($data as $column => $value) {
+            $final_values .= "$column = '$value',";
+        }
+        if ($final_values != '') {
+            $final_values = substr($final_values, 0, -1);
+            $sql_update = "UPDATE {$this->table} SET $final_values $where;";
+            $connect = $this->connect();
+            $result = $connect->query($sql_update);
+            $connect->close();
+            return $result;
+        } else {
+            return 'Values not informed';
+        }
+    }
+
     protected function row(String $table = NULL) {
         return $this->execute_select('row', $table);
     }
