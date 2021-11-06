@@ -15,11 +15,11 @@ class Welcome extends Controller {
         $this->view('welcome');
     }
 
-    public function langPt() {
+    public function changeLanguage() {
+        /*
+        Enter the language folder name as a parameter or leave it empty to use the default language.
+        You can enter a default language in "DEFAULT_LANGUAGE" in the "app/config/config.php" file
+        */
         setLanguage('pt_br');
-    }
-
-    public function langDefault() {
-        setLanguage();
     }
 }
