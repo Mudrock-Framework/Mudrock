@@ -61,6 +61,32 @@ class Controller {
         }
     }
 
+    protected function validate(Array $data, String $type_request) {
+        $type_request = strtoupper($type_request);
+        $dados = ['name', 'email', 'pass'];
+        $errors = [];
+        foreach ($data as $input) {
+            if ($type_request == 'POST') {
+                (@$_POST[$input]) ? : array_push($errors, $input);
+            }
+            else if ($type_request == 'GET') {
+                (@$_GET[$input]) ? : array_push($errors, $input);
+            }
+        }
+        if (!empty($errors)) {
+            if (count($errors) > 1) {
+                $exception = new Exceptions();
+                $exception->error('validate_inputs_fail', implode(', ', $errors));
+                return FALSE;
+            } else {
+                $exception = new Exceptions();
+                $exception->error('validate_input_fail', $errors[0]);
+                return FALSE;
+            }
+        }
+        return TRUE;
+    }
+
     protected function setSession(string $column, string $value) {
         (new Session)->set($column, $value);
     }

@@ -37,6 +37,14 @@ class Exceptions extends Controller {
             case 'view_not_found':
                 $this->callControllerMessage(404, 'View file not found', 'The view file was not found in the "app/views/" folder:', $description);
                 break;
+
+            case 'validate_input_fail':
+                $this->callControllerMessage(404, 'Required field not entered', 'The following field are required:', $description);
+                break;
+
+            case 'validate_inputs_fail':
+                $this->callControllerMessage(404, 'Required fields not entered', 'The following fields are required:', $description);
+                break;
             
             default:
                 break;
