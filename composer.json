@@ -1,5 +1,6 @@
 {
     "name": "mudrock/mudrock",
+    "description": "A PHP Framework MVC",
     "authors": [
         {
             "name": "Douglas Sales",
@@ -13,5 +14,6 @@
         }
     },
     "require": {
+        "php": ">=7.3"
     }
 }
