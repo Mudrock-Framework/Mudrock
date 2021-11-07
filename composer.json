@@ -16,6 +16,13 @@
         }
     },
     "require": {
-        "php": ">=7.3"
-    }
+        "php": "^7.3|^8.0"
+    },
+    "config": {
+        "optimize-autoloader": true,
+        "preferred-install": "dist",
+        "sort-packages": true
+    },
+    "minimum-stability": "1.0",
+    "prefer-stable": true
 }
