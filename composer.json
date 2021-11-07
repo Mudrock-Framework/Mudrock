@@ -1,6 +1,7 @@
 {
     "name": "mudrock/mudrock",
     "description": "A PHP Framework MVC",
+    "license": "MIT",
     "authors": [
         {
             "name": "Douglas Sales",
