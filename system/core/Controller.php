@@ -7,6 +7,24 @@ class Controller {
     protected $language = [];
     public $model;
     protected $model_name;
+    protected $inputs;
+
+    protected function request(string $input_name = NULL) {
+        if (empty($this->inputs)) {
+            $json = file_get_contents('php://input');
+            if (!empty($json)) {
+                $final_inputs = array_merge_recursive((array) json_decode($json), $_REQUEST);
+            } else {
+                $final_inputs = $_REQUEST;
+            }
+            $this->inputs = $final_inputs;
+        }
+        if ($input_name) {
+            return $this->inputs[$input_name];
+        } else {
+            return $this->inputs;
+        }
+    }
 
     protected function view(String $view) {
         $file_view = '.././app/views/' . $view . '.php';
