@@ -197,4 +197,38 @@ class Model {
         }
     }
 
+    public function do_login(array $login, array $password, string $table, bool $password_encrypted = FALSE) {
+        try {
+            foreach ($login as $column => $value) {
+                $where = "$column = '$value'";
+            }
+            foreach ($password as $column => $value) {
+                $password_column = $column;
+                $password_value = $value;
+            }
+            $connect = $this->connect();
+            $sql = "SELECT {$password_column} FROM {$table} WHERE {$where}";
+            $response = false;
+            $result = $connect->query($sql);
+            if ($result) {
+                while ($obj = mysqli_fetch_object($result)) {
+                    if ($password_encrypted) {
+                        if (decrypt($obj->{$password_column}) == $password_value) {
+                            $response = true;
+                        }
+                    } else {
+                        if ($obj->{$password_column} == $password_value) {
+                            $response = true;
+                        }
+                    }
+                }
+            }
+            return $response;
+
+        } catch (\Throwable $th) {
+            return FALSE;
+        }
+
+    }
+
 }
