@@ -17,9 +17,9 @@ class Welcome extends Controller {
 
     public function login() {
         /* ---------------------------------------------------------------------------------------------------
-           | To use the "$this->login( )" method, which validates that the login and password are correct, |
-           |      you will need to create two arrays (one for the login data and one for the password),      |
-           |      the name of the database table and whether the password is encrypted in the database       |
+           | To use the "$this->login( )" method, which validates that the login and password are correct,   |
+           |      you will need to create two arrays (one for the login data and one for the password)       |
+           |                         and the name of the database table                                      |
            ---------------------------------------------------------------------------------------------------
             Example:
 
@@ -32,6 +32,8 @@ class Welcome extends Controller {
             ];
 
             $user_table_name = "users";
+
+            $this->do_login($array_login, $array_password, $user_table_name);
          ------------------------------------------------------------------------------------------------------- */
 
         $username_data = [
@@ -51,10 +53,10 @@ class Welcome extends Controller {
     }
 
     public function changeLanguage() {
-        /*
-            Enter the language folder name as a parameter or leave it empty to use the default language.
-            You can enter a default language in "DEFAULT_LANGUAGE" in the "app/config/config.php" file
-        */
+        /*------------------------------------------------------------------------------------------------
+        |   Enter the language folder name as a parameter or leave it empty to use the default language. |
+        |   You can enter a default language in "DEFAULT_LANGUAGE" in the "app/config/config.php" file   |
+        ------------------------------------------------------------------------------------------------ */
         setLanguage('pt_br');
     }
 }
