@@ -59,9 +59,7 @@ docker-compose up
 <br />
 
 - Now open your browser and access the URL:
-```
-https://localhost:8000
-```
+[http://localhost:8000](http://localhost:8000)
 
 <br />
 
