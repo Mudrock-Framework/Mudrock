@@ -32,7 +32,6 @@ class Welcome extends Controller {
             ];
 
             $user_table_name = "users";
-            $encrypted = true;
          ------------------------------------------------------------------------------------------------------- */
 
         $username_data = [
@@ -43,7 +42,7 @@ class Welcome extends Controller {
             'password' => $this->request('password')
         ];
 
-        if ($this->do_login($username_data, $password_data, 'users', TRUE) == TRUE) {
+        if ($this->do_login($username_data, $password_data, 'users') == TRUE) {
             echo 'Login successful!';
         } else {
             echo 'Incorrect data!';

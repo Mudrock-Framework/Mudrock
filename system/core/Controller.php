@@ -105,9 +105,9 @@ class Controller {
         return TRUE;
     }
 
-    protected function do_login(array $array_username, array $array_password, string $table, bool $password_encrypted = FALSE) {
+    protected function do_login(array $array_username, array $array_password, string $table) {
         $model = new Model();
-        return $model->do_login($array_username, $array_password, $table, $password_encrypted);
+        return $model->do_login($array_username, $array_password, $table);
     }
 
     protected function setSession(string $column, string $value) {
