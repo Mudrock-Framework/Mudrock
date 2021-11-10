@@ -197,7 +197,7 @@ class Model {
         }
     }
 
-    public function do_login(array $login, array $password, string $table, bool $password_encrypted = FALSE) {
+    public function do_login(array $login, array $password, string $table) {
         try {
             foreach ($login as $column => $value) {
                 $where = "$column = '$value'";
@@ -212,14 +212,11 @@ class Model {
             $result = $connect->query($sql);
             if ($result) {
                 while ($obj = mysqli_fetch_object($result)) {
-                    if ($password_encrypted) {
-                        if (decrypt($obj->{$password_column}) == $password_value) {
-                            $response = true;
-                        }
-                    } else {
-                        if ($obj->{$password_column} == $password_value) {
-                            $response = true;
-                        }
+                    if (decrypt($obj->{$password_column}) == $password_value) {
+                        $response = true;
+                    }
+                    if ($obj->{$password_column} == $password_value) {
+                        $response = true;
                     }
                 }
             }
