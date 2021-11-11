@@ -1,9 +1,6 @@
 <?php
 namespace system\core;
 
-use Exception;
-use system\core\Exceptions;
-
 class BaseRouter {
 
     private $uri;
