@@ -2,7 +2,7 @@
 
 use system\core\Session;
 
-define('VERSION', '1.0');
+define('VERSION', '1.1');
 
 function dd($parameters = NULL, bool $die = TRUE) {
     echo '<pre>';
