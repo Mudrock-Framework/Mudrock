@@ -16,8 +16,8 @@ services:
       restart: 'no'
       tty: true
       environment:
-        MYSQL_ROOT_PASSWORD:
-        MYSQL_DATABASE: test
+        MYSQL_ROOT_PASSWORD: root
+        MYSQL_DATABASE: mudrock
         MYSQL_USER: root
         MYSQL_PASSWORD:
       ports:
