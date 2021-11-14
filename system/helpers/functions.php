@@ -2,7 +2,7 @@
 
 use system\core\Session;
 
-define('VERSION', '1.1');
+define('VERSION', '1.2');
 
 function dd($parameters = NULL, bool $die = TRUE) {
     echo '<pre>';
@@ -69,6 +69,10 @@ function decrypt(String $string) {
     $encryption_key = base64_decode(ENCRYPT_KEY);
     list($encrypted_data, $iv) = array_pad(explode('::', base64_decode($string), 2),2,null);
     return openssl_decrypt($encrypted_data, 'aes-256-cbc', $encryption_key, 0, $iv);
+}
+
+function redirect(String $url) {
+    header('Location: ' . $url);
 }
 
 function getVersion() {

@@ -6,8 +6,7 @@ function generate(string $name_file) {
     $model_name_lc = $name_file . '_model';
     $table_example = strtolower($name_file);
 
-    $content_controller = "
-<?php
+    $content_controller = "<?php
 
 namespace app\controllers;
 use system\core\Controller;
@@ -25,8 +24,7 @@ class $controller_name extends Controller {
 
 ?>";
 
-    $content_model = "
-<?php
+    $content_model = "<?php
 
 namespace system\core;
 
