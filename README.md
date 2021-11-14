@@ -52,7 +52,6 @@ composer create-project mudrock/mudrock my-project
 - Run by <b>Docker:</b>
 ```shell
 cd my-project
-docker-compose build
 docker-compose up
 ```
 
