@@ -75,6 +75,18 @@ function redirect(String $url) {
     header('Location: ' . $url);
 }
 
+function setSession(string $column, string $value) {
+    (new Session)->set($column, $value);
+}
+
+function getSession(string $column) {
+    return (new Session)->get($column);
+}
+
+function destroySession(string $column = NULL) {
+    (new Session)->destroy($column);
+}
+
 function getVersion() {
     echo VERSION;
 }

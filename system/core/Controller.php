@@ -56,7 +56,7 @@ class Controller {
     }
 
     protected function load_language(String $file) {
-        $folder = ($this->getSession('language')) ? $this->getSession('language') : DEFAULT_LANGUAGE;
+        $folder = (getSession('language')) ? getSession('language') : DEFAULT_LANGUAGE;
         $filename = '.././app/languages/'. $folder .'/'. $file .'.php';
         if(file_exists($filename)) {
             $this->language = include $filename;
@@ -112,17 +112,5 @@ class Controller {
     protected function do_login(array $array_username, array $array_password, string $table) {
         $model = new Model();
         return $model->do_login($array_username, $array_password, $table);
-    }
-
-    protected function setSession(string $column, string $value) {
-        (new Session)->set($column, $value);
-    }
-
-    protected function getSession(string $column) {
-        return (new Session)->get($column);
-    }
-
-    public function destroySession(string $column = NULL) {
-        (new Session)->destroy($column);
     }
 }
