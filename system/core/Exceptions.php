@@ -1,15 +1,20 @@
 <?php
 namespace system\core;
-use system\core\Controller;
 
 class Exceptions extends Controller {
 
     public function __construct() {
+        //
     }
 
-    public function error(String $error, String $description = NULL) {
+    /**
+     * @param string $error
+     * @param string|NULL $description
+     * @return void
+     */
+    public function error(string $error, string $description = NULL): void
+    {
         switch ($error) {
-
             case 'undefined_route':
                 $this->callControllerMessage(404, 'Undefined Route', 'The route informed has no method defined:', $description);
                 break;
@@ -51,8 +56,15 @@ class Exceptions extends Controller {
         }
     }
 
-
-    private function callControllerMessage(Int $code, String $title, String $message, String $description) {
+    /**
+     * @param int $code
+     * @param string $title
+     * @param string $message
+     * @param string $description
+     * @return void
+     */
+    private function callControllerMessage(int $code, string $title, string $message, string $description): void
+    {
         http_response_code($code);
         $this->title($title);
         $this->exception('error', [

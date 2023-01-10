@@ -4,20 +4,36 @@ namespace system\core;
 
 class Session {
 
-    public function set(string $column, string $value) {
+    /**
+     * @param string $column
+     * @param string $value
+     * @return void
+     */
+    public function set(string $column, string $value): void
+    {
         $_SESSION[$column] = $value;
     }
 
-    public function get(string $column) {
+    /**
+     * @param string $column
+     * @return mixed
+     */
+    public function get(string $column): ?string
+    {
         return $_SESSION[$column];
     }
 
-    public function destroy(string $column = NULL) {
+    /**
+     * @param string|NULL $column
+     * @return void
+     */
+    public function destroy(string $column = NULL): void
+    {
         if ($column) {
             unset($_SESSION[$column]);
-        } else {
-            session_destroy();
+            return;
         }
-    }
 
+        session_destroy();
+    }
 }

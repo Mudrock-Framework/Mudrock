@@ -3,20 +3,42 @@ namespace system\core;
 
 class BaseRouter {
 
+    /**
+     * @var string|array
+     */
     private $uri;
+
+    /**
+     * @var array
+     */
     private $method;
+
+    /**
+     * @var array
+     */
     private $array_get = [];
+
+    /**
+     * @var array
+     */
     private $array_post = [];
 
-    public function run() {
+    /**
+     * @return void
+     */
+    public function run(): void
+    {
         session_start();
         $this->init();
         require_once('.././app/config/routes.php');
         $this->exec();
     }
 
-    private function init() {
-
+    /**
+     * @return void
+     */
+    private function init(): void
+    {
         $this->method  = $_SERVER['REQUEST_METHOD'];
         $explode_uri   = explode('/', $_SERVER['REQUEST_URI']);
         $normalize_uri = array_values(array_filter($explode_uri));
@@ -32,41 +54,60 @@ class BaseRouter {
         }
     }
 
-    private function exec() {
+    /**
+     * @return void
+     */
+    private function exec(): void
+    {
         switch ($this->method) {
             case 'GET':
                 if (!$this->searchRoute($this->array_get)) {
                     $this->validateRouteMethod();
                 }
                 break;
-
             case 'POST':
                 if (!$this->searchRoute($this->array_post)) {
                     $this->validateRouteMethod();
                 }
                 break;
-            
             default:
                 $exception = new Exceptions();
                 $exception->error('request_method_not_allowed', $this->method);
         }
     }
 
-    private function get($router, $callback) {
+    /**
+     * @param string $router
+     * @param string $callback
+     * @return void
+     */
+    private function get(string $router, string $callback): void
+    {
         $this->array_get[] = [
             'router' => $router,
             'callback' => $callback
         ];
     }
 
-    private function post($router, $callback) {
+    /**
+     * @param string $router
+     * @param string $callback
+     * @return void
+     */
+    private function post(string $router, string $callback): void
+    {
         $this->array_post[] = [
             'router' => $router,
             'callback' => $callback
         ];
     }
 
-    private function callControllerFunction(String $call) {
+    /**
+     * @param string $call
+     * @return void
+     */
+    private function callControllerFunction(string $call): void
+    {
         $callback = explode('@', $call);
         $exception = new Exceptions();
 
@@ -78,7 +119,7 @@ class BaseRouter {
         $controller = 'app\\controllers\\' . $callback[0];
         $method = $callback[1];
 
-        if (!class_exists($controller)) {            
+        if (!class_exists($controller)) {
             $exception->error('controller_not_found', $callback[0]);
             return;
         }
@@ -94,8 +135,11 @@ class BaseRouter {
         ], []);
     }
 
-    private function validateRouteMethod() {
-
+    /**
+     * @return bool
+     */
+    private function validateRouteMethod(): bool
+    {
         $router = substr_replace($this->uri, '/', 0, 0);
         $exists_another_method = false;
 
@@ -111,11 +155,12 @@ class BaseRouter {
         }
 
         foreach ($this->array_post as $index => $array) {
+            $array_router = $array['router'];
+
             if (substr($array['router'], 0, 1) != '/') {
                 $array_router = substr_replace($array['router'], '/', 0, 0);
-            } else {
-                $array_router = $array['router'];
-            }                
+            }
+
             if ($array_router == $router) {
                 $exists_another_method = true;
             }
@@ -124,20 +169,31 @@ class BaseRouter {
         if ($exists_another_method) {
             $exception = new Exceptions();
             $exception->error('request_not_allowed', $this->uri);
-        } else {
-            $exception = new Exceptions();
-            $exception->error('route_not_found', $router);
+
+            return true;
         }
+
+        $exception = new Exceptions();
+        $exception->error('route_not_found', $router);
+
+        return false;
     }
 
-    private function searchRoute(Array $method_array) {
+    /**
+     * @param array $method_array
+     * @return bool
+     */
+    private function searchRoute(array $method_array): bool
+    {
         $router_exists = false;
+
         foreach ($method_array as $request) {
+            $router = $request['router'];
+
             if (substr($request['router'], 0, 1) == '/') {
                 $router = substr($request['router'], 1);
-            } else {
-                $router = $request['router'];
             }
+
             if ($router == $this->uri) {
                 $router_exists = true;
                 if (is_callable($request['callback'])) {
@@ -147,10 +203,14 @@ class BaseRouter {
                 }
             }
         }
+
         return $router_exists;
     }
 
-    public function getUri()
+    /**
+     * @return array|string
+     */
+    public function getUri(): array
     {
         return $this->uri;
     }
