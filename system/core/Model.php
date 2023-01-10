@@ -5,90 +5,146 @@ use mysqli;
 
 class Model {
 
+    /**
+     * @var string
+     */
     private $columns = '*';
+
+    /**
+     * @var string
+     */
     private $table;
+
+    /**
+     * @var string
+     */
     private $where = '';
+
+    /**
+     * @var int
+     */
     private $limit;
+
+    /**
+     * @var string
+     */
     private $order_by;
 
-    protected function select(String $column = '*') {
+    /**
+     * @param string $column
+     * @return void
+     */
+    protected function select(string $column = '*'): void
+    {
         $this->columns = $column;
     }
 
-    protected function table(String $table) {
+    /**
+     * @param string $table
+     * @return void
+     */
+    protected function table(string $table): void
+    {
         $this->table = $table;
     }
 
-    protected function where(String $column, String $condition, String $value) {
+    /**
+     * @param string $column
+     * @param string $condition
+     * @param string $value
+     * @return void
+     */
+    protected function where(
+        string $column,
+        string $condition,
+        string $value
+    ): void {
         if ($condition == 'like') {
             $this->where = ("$column like '%$value%'");
-        }
-        else if ($condition == '>' || $condition == '>=' || $condition == '<' || $condition == '<=') {
+        } else if ($condition == '>' || $condition == '>=' || $condition == '<' || $condition == '<=') {
             $this->where = ("$column $condition $value");
-        }
-        else {
+        } else {
+            $this->where = ("$column $condition '$value'");
+
             if (is_numeric($value)) {
                 $this->where = ("$column $condition $value");
-            } else {
-                $this->where = ("$column $condition '$value'");
             }
         }
     }
 
-    protected function and_where(String $column, String $condition, String $value) {
-        if ($this->where != '') {
-            $this->where .= ' AND ';
-        }
-
-        if ($condition == 'like') {
-            $this->where .= ("$column like '%$value%'");
-        }
-        else if ($condition == '>' || $condition == '>=' || $condition == '<' || $condition == '<=') {
-            $this->where .= ("$column $condition $value");
-        }
-        else {
-            $this->where .= ("$column $condition '$value'");
-        }
+    /**
+     * @param string $column
+     * @param string $condition
+     * @param string $value
+     * @return void
+     */
+    protected function and_where(string $column, string $condition, string $value): void
+    {
+        $this->or_and_where_structrure(
+            'AND',
+            $condition,
+            $column,
+            $value
+        );
     }
 
-    protected function or_where(String $column, String $condition, String $value) {
-        if ($this->where != '') {
-            $this->where .= ' OR ';
-        }
-
-        if ($condition == 'like') {
-            $this->where .= ("$column like '%$value%'");
-        }
-        else if ($condition == '>' || $condition == '>=' || $condition == '<' || $condition == '<=') {
-            $this->where .= ("$column $condition $value");
-        }
-        else {
-            $this->where .= ("$column $condition '$value'");
-        }
+    /**
+     * @param string $column
+     * @param string $condition
+     * @param string $value
+     * @return void
+     */
+    protected function or_where(string $column, string $condition, string $value): void
+    {
+        $this->or_and_where_structrure(
+            'OR',
+            $condition,
+            $column,
+            $value
+        );
     }
 
-    protected function limit(String $limit) {
+    /**
+     * @param string $limit
+     * @return void
+     */
+    protected function limit(string $limit): void
+    {
         $this->limit = $limit;
     }
 
-    protected function order_by(String $order_by, String $order = NULL) {
+    /**
+     * @param string $order_by
+     * @param string|NULL $order
+     * @return void
+     */
+    protected function order_by(string $order_by, string $order = NULL): void
+    {
+        $this->order_by = $order_by;
+
         if ($order) {
             $this->order_by = $order_by . ' ' . $order;
-        } else {
-            $this->order_by = $order_by;
         }
     }
 
-    protected function insert(Array $data) {
+    /**
+     * @param array $data
+     * @return string
+     */
+    protected function insert(array $data): string
+    {
         if ($this->table != '') {
             return 'Table not defined';
         }
+
         $final_columns = "";
         $final_values = "";
+
         foreach ($data as $column => $value) {
             $final_columns .= "$column,";
             $final_values .= "'$value',";
         }
+
         if ($final_values != '' && $final_columns != '') {
             $final_columns = substr($final_columns, 0, -1);
             $final_values = substr($final_values, 0, -1);
@@ -97,46 +153,93 @@ class Model {
             $connect->query($sql_insert);
             $id = $connect->insert_id;
             $connect->close();
+
             return $id;
-        } else {
-            return 'Values not informed';
         }
+
+        return 'Values not informed';
     }
 
-    protected function update(Array $data) {
+    /**
+     * @param array $data
+     * @return bool|\mysqli_result|string
+     */
+    protected function update(array $data): ?bool
+    {
         if ($this->table == '') {
             return 'Table not defined';
         }
+
+        $where = '';
+
         if ($this->where != '') {
             $where = "WHERE {$this->where}";
-        } else {
-            $where = '';
         }
+
         $final_values = "";
+
         foreach ($data as $column => $value) {
             $final_values .= "$column = '$value',";
         }
+
         if ($final_values != '') {
             $final_values = substr($final_values, 0, -1);
             $sql_update = "UPDATE {$this->table} SET $final_values $where;";
             $connect = $this->connect();
             $result = $connect->query($sql_update);
             $connect->close();
+
             return $result;
-        } else {
-            return 'Values not informed';
         }
+
+        return 'Values not informed';
     }
 
-    protected function row(String $table = NULL) {
+    /**
+     * @param string|NULL $table
+     * @return array|string
+     */
+    protected function row(string $table = NULL): ?array
+    {
         return $this->execute_select('row', $table);
     }
 
-    protected function result(String $table = NULL) {
+    /**
+     * @param string|NULL $table
+     * @return array|string
+     */
+    protected function result(string $table = NULL): ?array
+    {
         return $this->execute_select('result', $table);
     }
 
-    private function execute_select(String $type, String $table = NULL) {
+    /**
+     * @param string $type
+     * @param string $condition
+     * @param string $column
+     * @param string $value
+     * @return void
+     */
+    private function or_and_where_structrure(
+        string $type,
+        string $condition,
+        string $column,
+        string $value
+    ): void {
+        if ($this->where != '') {
+            $this->where .= " $type ";
+        }
+
+        if ($condition == 'like') {
+            $this->where .= ("$column like '%$value%'");
+        } else if ($condition == '>' || $condition == '>=' || $condition == '<' || $condition == '<=') {
+            $this->where .= ("$column $condition $value");
+        } else {
+            $this->where .= ("$column $condition '$value'");
+        }
+    }
+
+    private function execute_select(string $type, string $table = NULL) {
         if ($table) {
             $this->table = $table;
         }
@@ -225,7 +328,5 @@ class Model {
         } catch (\Throwable $th) {
             return FALSE;
         }
-
     }
-
 }

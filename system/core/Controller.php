@@ -1,15 +1,41 @@
 <?php
 namespace system\core;
 
+use stdClass;
+
 class Controller {
 
+    /**
+     * @var array
+     */
     protected $data = [];
+
+    /**
+     * @var array
+     */
     protected $language = [];
+
+    /**
+     * @var stdClass
+     */
     public $model;
+
+    /**
+     * @var string
+     */
     protected $model_name;
+
+    /**
+     * @var array
+     */
     protected $inputs;
 
-    protected function request(string $input_name = NULL) {
+    /**
+     * @param string|NULL $input_name
+     * @return array|mixed
+     */
+    protected function request(string $input_name = NULL): array
+    {
         if (empty($this->inputs)) {
             $json = file_get_contents('php://input');
             if (!empty($json)) {
@@ -19,15 +45,22 @@ class Controller {
             }
             $this->inputs = $final_inputs;
         }
+
         if ($input_name) {
             return $this->inputs[$input_name];
-        } else {
-            return $this->inputs;
         }
+
+        return $this->inputs;
     }
 
-    protected function view(String $view) {
+    /**
+     * @param String $view
+     * @return bool
+     */
+    protected function view(String $view): bool
+    {
         $file_view = '.././app/views/' . $view . '.php';
+
         if (file_exists($file_view)) {
             extract($this->data);
             include($file_view);
@@ -35,38 +68,72 @@ class Controller {
                 echo '<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">';
                 echo '<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>';
             }
-        } else {
-            $exception = new Exceptions();
-            $exception->error('view_not_found', $view);
+
+            return true;
         }
+
+        $exception = new Exceptions();
+        $exception->error('view_not_found', $view);
+
+        return false;
     }
 
-    protected function title(String $title) {
+    /**
+     * @param String $title
+     * @return void
+     */
+    protected function title(String $title): void
+    {
         echo '<title>'. $title .'</title>';
     }
 
-    protected function var($variable_name, $value) {
+    /**
+     * @param $variable_name
+     * @param $value
+     * @return void
+     */
+    protected function var(string $variable_name, string $value): void
+    {
         $this->data[$variable_name] = $value;
     }
 
-    protected function exception(String $type, $params = []) {
+    /**
+     * @param string $type
+     * @param array $params
+     * @return void
+     */
+    protected function exception(string $type, array $params = []): void
+    {
         $total_params = array_merge_recursive($params, $this->data);
         extract($total_params);
         include('.././system/core/src/message_'.$type.'.php');
     }
 
-    protected function load_language(String $file) {
+    /**
+     * @param string $file
+     * @return void
+     */
+    protected function load_language(string $file): void
+    {
         $folder = (getSession('language')) ? getSession('language') : DEFAULT_LANGUAGE;
         $filename = '.././app/languages/'. $folder .'/'. $file .'.php';
+
         if(file_exists($filename)) {
             $this->language = include $filename;
-        } else {
-            $this->language = [];
+            return;
         }
+
+        $this->language = [];
     }
 
-    protected function load_model(String $file) {
+    /**
+     * @param string $file
+     * @return void
+     */
+    protected function load_model(string $file): void
+    {
         $filename = '.././app/models/'. $file .'.php';
+
         if(file_exists($filename)) {
             $this->model_name = $file;
             include $filename;
@@ -75,7 +142,12 @@ class Controller {
         }
     }
 
-    public function lang(String $word) {
+    /**
+     * @param string $word
+     * @return void
+     */
+    public function lang(string $word): void
+    {
         try {
             echo $this->language[$word];
         } catch (\Throwable $th) {
@@ -83,34 +155,52 @@ class Controller {
         }
     }
 
-    protected function validate(Array $data, String $type_request) {
+    /**
+     * @param array $data
+     * @param string $type_request
+     * @return bool
+     */
+    protected function validate(array $data, string $type_request): bool
+    {
         $type_request = strtoupper($type_request);
-        $dados = ['name', 'email', 'pass'];
         $errors = [];
+
         foreach ($data as $input) {
-            if ($type_request == 'POST') {
-                (@$_POST[$input]) ? : array_push($errors, $input);
-            }
-            else if ($type_request == 'GET') {
-                (@$_GET[$input]) ? : array_push($errors, $input);
+            switch ($type_request) {
+                case 'POST':
+                    (@$_POST[$input]) ? : array_push($errors, $input);
+                    break;
+                case 'GET':
+                    (@$_GET[$input]) ? : array_push($errors, $input);
+                    break;
             }
         }
+
         if (!empty($errors)) {
             if (count($errors) > 1) {
                 $exception = new Exceptions();
                 $exception->error('validate_inputs_fail', implode(', ', $errors));
-                return FALSE;
-            } else {
-                $exception = new Exceptions();
-                $exception->error('validate_input_fail', $errors[0]);
-                return FALSE;
+                return false;
             }
+
+            $exception = new Exceptions();
+            $exception->error('validate_input_fail', $errors[0]);
+
+            return false;
         }
-        return TRUE;
+
+        return true;
     }
 
+    /**
+     * @param array $array_username
+     * @param array $array_password
+     * @param string $table
+     * @return bool
+     */
     protected function do_login(array $array_username, array $array_password, string $table) {
         $model = new Model();
+
         return $model->do_login($array_username, $array_password, $table);
     }
 }
