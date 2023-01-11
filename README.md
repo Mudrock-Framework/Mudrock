@@ -6,7 +6,7 @@
 
 <div align="center">
 
-![GitHub go.mod Go version of a Go module](https://badgen.net/badge/Versão/1.2.0/green) &nbsp; &nbsp; 
+![GitHub go.mod Go version of a Go module](https://badgen.net/badge/Versão/1.2.1/green) &nbsp; &nbsp; 
 ![License](https://img.shields.io/badge/license-MIT-blue.svg) &nbsp; &nbsp;
 [![PHP Version Require](http://poser.pugx.org/badges/poser/require/php)](https://packagist.org/mudrock/mudrock) 
 
